@@ -43,7 +43,7 @@ html, body {
 			justify-content: center;
 			margin: 1vmin;
 			box-sizing: border-box;
-			border: 2px solid green;
+			background-color: rgba(255, 255, 255, 0.2);
 			border-radius: 2vmin;
 			font-size: 10vmin;
 			background-image: none;

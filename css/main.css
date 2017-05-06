@@ -20,6 +20,9 @@ html, body {
 }
 
 	.game .header {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
 		height: 12vmin;
 		width: 80vmin;
 		font-size: 10vmin;

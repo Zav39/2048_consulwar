@@ -14,6 +14,11 @@ class Game {
 			parentElement: gameFieldElement
 		});
 
+		this.ratingElement = createAndAppend({
+			className: 'rating',
+			parentElement: this.headerElement
+		});
+
 		this.rating = 0;
 
 
@@ -51,7 +56,7 @@ class Game {
 
 	set rating(value) {
 		this._rating = value;
-		this.headerElement.innerHTML = 'Rating: ' + value;
+		this.ratingElement.innerHTML = 'Rating: ' + value;
 	}
 
 	get rating() {
@@ -80,7 +85,6 @@ class Game {
 		}
 	}
 
-
 	// Обходим все ячейки в противоположном направлении от нажатия клавиши
 	// По направлению первую строку или столбец пропускаем
 	// Для ячейки ищем следующую заяную ячейку (или последнюю)
@@ -90,30 +94,7 @@ class Game {
 		let hasMoved = false;
 		for (let i = 0; i < this.size; i++) {
 			for (let k = this.size - 2; k >= 0; k--) {
-				let currentCell = this.field[i][k];
-				if (currentCell.isEmpty) {
-					continue;
-				}
-
-				let nextCellKey = k + 1;
-				while (nextCellKey < this.size) {
-
-					let nextCell = this.field[i][nextCellKey];
-					if (!nextCell.isEmpty || this.isLastKey(nextCellKey)) {
-						if ((nextCell.isEmpty && this.isLastKey(nextCellKey)) // last cell with no value
-							|| nextCell.isSameTo(currentCell)) {
-							this.field[i][nextCellKey].merge(currentCell);
-							hasMoved = true;
-						} else if (!nextCell.isEmpty && nextCellKey - 1 != k) {
-							this.field[i][nextCellKey - 1].merge(currentCell);
-							hasMoved = true;
-						}
-
-						break;
-					}
-					nextCellKey++;
-					nextCell = this.field[i][nextCellKey];
-				}
+				hasMoved = this.move(i, k, false, true, this.isLastKey.bind(this)) || hasMoved;
 			}
 		}
 
@@ -134,29 +115,7 @@ class Game {
 		let hasMoved = false;
 		for (let i = 0; i < this.size; i++) {
 			for (let k = 1; k < this.size; k++) {
-				let currentCell = this.field[i][k];
-				if (currentCell.isEmpty) {
-					continue;
-				}
-
-				let nextCellKey = k - 1;
-				while (nextCellKey >= 0) {
-					let nextCell = this.field[i][nextCellKey];
-					if (!nextCell.isEmpty || this.isFirstKey(nextCellKey)) {
-						if ((nextCell.isEmpty && this.isFirstKey(nextCellKey)) // last cell with no value
-							|| nextCell.isSameTo(currentCell)) {
-							this.field[i][nextCellKey].merge(currentCell);
-							hasMoved = true;
-						} else if (!nextCell.isEmpty && nextCellKey + 1 != k) {
-							this.field[i][nextCellKey + 1].merge(currentCell);
-							hasMoved = true;
-						}
-
-						break;
-					}
-					nextCellKey--;
-					nextCell = this.field[i][nextCellKey];
-				}
+				hasMoved = this.move(i, k, false, false, this.isFirstKey.bind(this)) || hasMoved;
 			}
 		}
 
@@ -168,32 +127,9 @@ class Game {
 
 	moveDown() {
 		let hasMoved = false;
-		for (let k = 0; k < this.size; k++) {
-			for (let i = this.size - 2; i >= 0; i--) {
-				let currentCell = this.field[i][k];
-				if (currentCell.isEmpty) {
-					continue;
-				}
-
-				let nextCellKey = i + 1;
-				while (nextCellKey < this.size) {
-
-					let nextCell = this.field[nextCellKey][k];
-					if (!nextCell.isEmpty || this.isLastKey(nextCellKey)) {
-						if ((nextCell.isEmpty && this.isLastKey(nextCellKey)) // last cell with no value
-							|| nextCell.isSameTo(currentCell)) {
-							this.field[nextCellKey][k].merge(currentCell);
-							hasMoved = true;
-						} else if (!nextCell.isEmpty && nextCellKey - 1 != i) {
-							this.field[nextCellKey - 1][k].merge(currentCell);
-							hasMoved = true;
-						}
-
-						break;
-					}
-					nextCellKey++;
-					nextCell = this.field[nextCellKey][k];
-				}
+		for (let i = this.size - 2; i >= 0; i--) {
+			for (let k = 0; k < this.size; k++) {
+				hasMoved = this.move(i, k, true, true, this.isLastKey.bind(this)) || hasMoved;
 			}
 		}
 
@@ -204,37 +140,46 @@ class Game {
 
 	moveUp() {
 		let hasMoved = false;
-		for (let k = 0; k < this.size; k++) {
-			for (let i = 1; i < this.size; i++) {
-				let currentCell = this.field[i][k];
-				if (currentCell.isEmpty) {
-					continue;
-				}
-
-				let nextCellKey = i - 1;
-				while (nextCellKey < this.size) {
-
-					let nextCell = this.field[nextCellKey][k];
-					if (!nextCell.isEmpty || this.isFirstKey(nextCellKey)) {
-						if ((nextCell.isEmpty && this.isFirstKey(nextCellKey)) // last cell with no value
-							|| nextCell.isSameTo(currentCell)) {
-							this.field[nextCellKey][k].merge(currentCell);
-							hasMoved = true;
-						} else if (!nextCell.isEmpty && nextCellKey + 1 != i) {
-							this.field[nextCellKey + 1][k].merge(currentCell);
-							hasMoved = true;
-						}
-
-						break;
-					}
-					nextCellKey--;
-					nextCell = this.field[nextCellKey][k];
-				}
+		for (let i = 1; i < this.size; i++) {
+			for (let k = 0; k < this.size; k++) {
+				hasMoved = this.move(i, k, true, false, this.isFirstKey.bind(this)) || hasMoved;
 			}
 		}
 
 		if (hasMoved) {
 			this.spawnUnit();
 		}
+	}
+
+
+	move(i, k, isI, isIncrement, keyCheck) {
+		let hasMoved = false;
+
+		let inc = isIncrement ? 1 : -1;
+		let currentCell = this.field[i][k];
+		if (currentCell.isEmpty) {
+			return hasMoved;
+		}
+
+		let nextCellKey = (isI ? i : k) + inc;
+		while (nextCellKey < this.size && nextCellKey >= 0) {
+			let nextCell = this.field[isI ? nextCellKey : i][isI ? k : nextCellKey];
+			if (!nextCell.isEmpty || keyCheck(nextCellKey)) {
+				if ((nextCell.isEmpty && keyCheck(nextCellKey)) 
+					|| nextCell.isSameTo(currentCell)) {
+					this.field[isI ? nextCellKey : i][isI ? k: nextCellKey].merge(currentCell);
+					hasMoved = true;
+				} else if (!nextCell.isEmpty && ((isI && (nextCellKey + (inc * -1) != i)) || (!isI && (nextCellKey + (inc * -1) != k)))) {
+					this.field[isI ? nextCellKey + (inc * -1) : i][isI ? k: nextCellKey + (inc * -1)].merge(currentCell);
+					hasMoved = true;
+				}
+
+				break;
+			}
+			nextCellKey += inc;
+			nextCell = this.field[isI ? nextCellKey : i][isI ? k : nextCellKey];
+		}
+
+		return hasMoved;
 	}
 }

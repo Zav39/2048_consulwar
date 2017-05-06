@@ -13,6 +13,7 @@ class Cell {
 			className: 'cell',
 			parentElement: fieldElement
 		});
+		this.element.setAttribute('data-ship', '');
 
 		setCellSize(this.element, this.game.cellSize);
 

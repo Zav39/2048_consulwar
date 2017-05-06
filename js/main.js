@@ -16,6 +16,6 @@ let getRandomInt = function(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-let fieldSize = window.prompt('Field size?', 4);
+let fieldSize = parseInt(window.prompt('Field size?', 4), 10);
 
-var game = new Game(document.body, fieldSize);
+var game = new Game(document.body, fieldSize || 4);

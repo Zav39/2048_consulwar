@@ -44,4 +44,57 @@ html, body {
 			border: 2px solid green;
 			border-radius: 2vmin;
 			font-size: 10vmin;
+			background-image: none;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+			color: transparent;
+		}
+
+		.game .field .cell[data-ship="2"] {
+			background-image: url(/img/units/gammadrone.png);
+		}
+
+		.game .field .cell[data-ship="4"] {
+			background-image: url(/img/units/wasp.png);
+		}
+
+		.game .field .cell[data-ship="8"] {
+			background-image: url(/img/units/mirage.png);
+		}
+
+		.game .field .cell[data-ship="16"] {
+			background-image: url(/img/units/truckc.png);
+		}
+
+		.game .field .cell[data-ship="32"] {
+			background-image: url(/img/units/frigate.png);
+		}
+
+		.game .field .cell[data-ship="64"] {
+			background-image: url(/img/units/cruiser.png);
+		}
+
+		.game .field .cell[data-ship="128"] {
+			background-image: url(/img/units/battleship.png);
+		}
+
+		.game .field .cell[data-ship="256"] {
+			background-image: url(/img/units/carrier.png);
+		}
+
+		.game .field .cell[data-ship="512"] {
+			background-image: url(/img/units/dreadnought.png);
+		}
+
+		.game .field .cell[data-ship="1024"] {
+			background-image: url(/img/units/railgun.png);
+		}
+
+		.game .field .cell[data-ship="2048"] {
+			background-image: url(/img/units/reaper.png);
+		}
+
+		.game .field .cell[data-ship="4096"] {
+			background-image: url(/img/units/flagship.png);
 		}

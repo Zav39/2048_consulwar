@@ -22,6 +22,7 @@ class Cell {
 		this._value = value;
 
 		this.element.innerHTML = value == 0 ? '' : value;
+		this.element.setAttribute('data-ship', value);
 	}
 
 	clear() {

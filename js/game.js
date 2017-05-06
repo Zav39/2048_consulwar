@@ -1,6 +1,8 @@
 class Game {
 	constructor(parentElement, size = 4) {
+		this.fieldSize = 80;
 		this.size = size;
+		this.cellSize = ((this.fieldSize / this.size) - 2);
 
 		let gameFieldElement = createAndAppend({
 			className: 'game',
@@ -45,9 +47,6 @@ class Game {
 					break;
 			}
 		}.bind(this));
-
-
-		console.log(this.field);
 	}
 
 	set rating(value) {

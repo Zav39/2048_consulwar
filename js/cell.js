@@ -1,4 +1,7 @@
-
+let setCellSize = function(cellElement, size) {
+	cellElement.style.width = size + 'vmin';
+	cellElement.style.height = size + 'vmin';
+}
 
 class Cell {
 	constructor(fieldElement, game) {
@@ -11,7 +14,7 @@ class Cell {
 			parentElement: fieldElement
 		});
 
-
+		setCellSize(this.element, this.game.cellSize);
 
 		if (Math.random() > 0.8) {
 			this.spawn();
@@ -62,6 +65,8 @@ class Cell {
 	hightlight() {
 		this.element.className = 'cell hightlight';
 
+		setCellSize(this.element, this.game.cellSize + 2);
+
 		let hightlightTime = 200;
 		let hightlightStartTime = new Date();
 		this.hightlightStartTime = hightlightStartTime;
@@ -69,6 +74,7 @@ class Cell {
 		setTimeout(function() {
 			if (hightlightStartTime == this.hightlightStartTime) {
 				this.element.className = 'cell';
+				setCellSize(this.element, this.game.cellSize);
 			} 
 		}.bind(this), hightlightTime);
 	}
@@ -80,6 +86,8 @@ class AnimateCell {
 		this.element = createAndAppend({className: 'cell animate'});
 		this.element.setAttribute('data-ship', fromCell.element.getAttribute('data-ship'));
 
+		setCellSize(this.element, fromCell.game.cellSize);
+
 		this.element.style.top = fromCell.element.offsetTop + 'px';
 		this.element.style.left = fromCell.element.offsetLeft + 'px';
 
@@ -90,6 +98,6 @@ class AnimateCell {
 		
 		setTimeout(function() {
 			fromCell.fieldElement.removeChild(this.element);
-		}.bind(this), 1000)
+		}.bind(this), 200)
 	}
 }

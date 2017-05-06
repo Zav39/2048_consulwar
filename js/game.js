@@ -7,14 +7,12 @@ class Game {
 			parentElement
 		});
 
-		let headerElement = createAndAppend({
+		this.headerElement = createAndAppend({
 			className: 'header',
 			parentElement: gameFieldElement
 		});
 
 		this.rating = 0;
-
-		headerElement.innerHTML = 'Rating: ' + this.rating;
 
 
 		let fieldElement = createAndAppend({
@@ -27,7 +25,7 @@ class Game {
 		for (let i = 0; i < size; i++) {
 			this.field[i] = [];
 			for (let k = 0; k < size; k++) {
-				this.field[i][k] = new Cell(fieldElement);
+				this.field[i][k] = new Cell(fieldElement, this);
 			}
 		}
 
@@ -50,6 +48,19 @@ class Game {
 
 
 		console.log(this.field);
+	}
+
+	set rating(value) {
+		this._rating = value;
+		this.headerElement.innerHTML = 'Rating: ' + value;
+	}
+
+	get rating() {
+		return this._rating;
+	}
+
+	addRating(value) {
+		this.rating += value;
 	}
 
 	spawnUnit() {

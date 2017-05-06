@@ -13,13 +13,15 @@ html, body {
 	height: 100%;
 	width: 100%;
 	background-color: #000;
+	background-image: url(/img/background.jpg);
+	background-position: center;
+	background-repeat: no-repeat;
 }
 
 	.game .header {
 		height: 20vmin;
 		width: 80vmin;
 		font-size: 10vmin;
-		background-color: #fff;
 		box-sizing: border-box;
 		border-bottom: 1px solid black;
 	}
@@ -30,7 +32,6 @@ html, body {
 		flex-wrap: wrap;
 		height: 80vmin;
 		width: 80vmin;
-		background-color: #fff;
 	}
 
 		.game .field .cell {

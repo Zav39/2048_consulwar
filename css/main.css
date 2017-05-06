@@ -3,6 +3,7 @@
 html, body {
 	width: 100%;
 	height: 100%;
+	overflow: hidden;
 }
 
 .game {
@@ -27,6 +28,8 @@ html, body {
 	}
 
 	.game .field {
+		position: relative;
+		z-index: 1;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
@@ -50,6 +53,29 @@ html, body {
 			background-repeat: no-repeat;
 			background-size: cover;
 			color: transparent;
+			transition: background-image 0.2s ease-in-out, height 0.2s, width 0.2s, margin 0.2s;
+		}
+
+		.game .field .cell.hightlight {
+			height: 20vmin;
+			width: 20vmin;
+			margin: 0;
+		}
+
+		@keyframes hide {
+			from {opacity: 1;}
+			to {opacity: 0;}
+		}
+
+		.game .field .cell.animate {
+			position: absolute;
+			margin: 0;
+			transition: left 0.2s, top 0.2s;
+			z-index: -1;
+			animation-name: hide;
+			animation-duration: 0.2s;
+			animation-iteration-count: 1;
+			animation-fill-mode: forwards;
 		}
 
 		.game .field .cell[data-ship="2"] {

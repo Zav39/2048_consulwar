@@ -1,6 +1,6 @@
 let setCellSize = function(cellElement, size) {
-	cellElement.style.width = size + 'vmin';
-	cellElement.style.height = size + 'vmin';
+	cellElement.style.width = size + '%';
+	cellElement.style.height = size + '%';
 }
 
 class Cell {

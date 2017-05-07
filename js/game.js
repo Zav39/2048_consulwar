@@ -1,8 +1,10 @@
 class Game {
 	constructor(parentElement, size = 4) {
-		this.fieldSize = 80;
+		this.fieldSize = (window.innerHeight * 0.88 > window.innerWidth ? window.innerWidth : window.innerHeight * 0.88);
+
 		this.size = size;
-		this.cellSize = ((this.fieldSize / this.size) - 2);
+
+		this.cellSize = ((100 / this.size) - 2);
 
 		let gameFieldElement = createAndAppend({
 			className: 'game',
@@ -26,6 +28,9 @@ class Game {
 			className: 'field',
 			parentElement: gameFieldElement
 		});
+
+		fieldElement.style.width = this.fieldSize + 'px';
+		fieldElement.style.height = this.fieldSize + 'px';
 
 		this.field = [];
 
@@ -52,6 +57,11 @@ class Game {
 					break;
 			}
 		}.bind(this));
+
+		onSwipe('up',    this.moveUp.bind(this));
+		onSwipe('down',  this.moveDown.bind(this));
+		onSwipe('left',  this.moveLeft.bind(this));
+		onSwipe('right', this.moveRight.bind(this));
 	}
 
 	set rating(value) {

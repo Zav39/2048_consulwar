@@ -23,23 +23,24 @@ class Game {
 
 		this.rating = 0;
 
+		this.restartElement = createAndAppend({
+			className: 'restart',
+			parentElement: this.headerElement,
+			value: 'Restart'
+		}, 'button');
 
-		let fieldElement = createAndAppend({
+		this.restartElement.addEventListener('click', this.restart.bind(this));
+
+
+		this.fieldElement = createAndAppend({
 			className: 'field',
 			parentElement: gameFieldElement
 		});
 
-		fieldElement.style.width = this.fieldSize + 'px';
-		fieldElement.style.height = this.fieldSize + 'px';
+		this.fieldElement.style.width = this.fieldSize + 'px';
+		this.fieldElement.style.height = this.fieldSize + 'px';
 
-		this.field = [];
-
-		for (let i = 0; i < size; i++) {
-			this.field[i] = [];
-			for (let k = 0; k < size; k++) {
-				this.field[i][k] = new Cell(fieldElement, this);
-			}
-		}
+		this.restart();
 
 		window.addEventListener('keyup', function(e) {
 			switch (e.keyCode) {
@@ -191,5 +192,17 @@ class Game {
 		}
 
 		return hasMoved;
+	}
+
+	restart() {
+		this.fieldElement.innerHTML = '';
+		this.field = [];
+
+		for (let i = 0; i < this.size; i++) {
+			this.field[i] = [];
+			for (let k = 0; k < this.size; k++) {
+				this.field[i][k] = new Cell(this.fieldElement, this);
+			}
+		}
 	}
 }

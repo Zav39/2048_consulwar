@@ -32,6 +32,10 @@ html, body {
 		justify-content: center;
 	}
 
+	.game .header .restart {
+		margin: 0 20px;
+	}
+
 	.game .field {
 		position: relative;
 		z-index: 1;
